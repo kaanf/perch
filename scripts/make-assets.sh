@@ -1,8 +1,9 @@
 #!/bin/bash
-# Renders Resources/Icon/AppIcon.svg into Resources/AppIcon.icns, and
-# Resources/DMG/background.svg into Resources/DMG/background.tiff.
+# Renders Resources/Icon/AppIcon.svg into Resources/AppIcon.icns,
+# Resources/DMG/background.svg into Resources/DMG/background.tiff, and
+# docs/hero.html into docs/hero.png.
 #
-# Run it after changing either SVG; the outputs are committed, so building
+# Run it after changing any of them; the outputs are committed, so building
 # Perch doesn't depend on this.
 set -euo pipefail
 cd "$(dirname "$0")/.."
@@ -26,3 +27,7 @@ echo "Wrote Resources/AppIcon.icns"
 "$WORK/render-svg" Resources/DMG/background.svg 660 400 1320 "$WORK/background@2x.png"
 tiffutil -cathidpicheck "$WORK/background.png" "$WORK/background@2x.png" -out Resources/DMG/background.tiff 2>/dev/null
 echo "Wrote Resources/DMG/background.tiff"
+
+# The readme's hero, at 2x.
+"$WORK/render-svg" docs/hero.html 1280 640 2560 docs/hero.png
+echo "Wrote docs/hero.png"

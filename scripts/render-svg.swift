@@ -8,7 +8,8 @@
 //
 //  Draws the SVG at width × height points in WebKit, which renders its blur
 //  filters and system fonts (CoreSVG doesn't), on a transparent background,
-//  and writes it scaled to the given pixel width.
+//  and writes it scaled to the given pixel width. A fragment of HTML works
+//  as well as an SVG.
 //
 
 import Cocoa
