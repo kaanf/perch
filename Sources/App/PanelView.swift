@@ -35,14 +35,14 @@ struct NotchMenu: View {
 
     var body: some View {
         if model.session.link == .connected {
-            Button("Bu Apple TV'yi unut") { model.session.forget() }
+            Button("Forget This Apple TV") { model.session.forget() }
             Divider()
         }
-        Button("Kurulum ve İzinler…") { model.onShowSetup?() }
+        Button("Setup and Permissions…") { model.onShowSetup?() }
         Divider()
         #if DEBUG
         if let mock = model.session as? MockTV {
-            Menu("Sahte TV") {
+            Menu("Mock TV") {
                 ForEach(MockTV.Scenario.allCases, id: \.self) { scenario in
                     Button(scenario.title) { mock.apply(scenario) }
                 }
@@ -50,6 +50,6 @@ struct NotchMenu: View {
             Divider()
         }
         #endif
-        Button("Perch'ten Çık") { NSApp.terminate(nil) }
+        Button("Quit Perch") { NSApp.terminate(nil) }
     }
 }

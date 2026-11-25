@@ -39,11 +39,11 @@ struct TrailingWing: View {
 
     private var label: String {
         switch model.compact {
-        case .offline: return "Apple TV bağlı değil"
-        case .pairing: return "Apple TV eşleşiyor"
-        case .idle: return "Apple TV bağlı"
-        case .playing: return "Apple TV oynatıyor"
-        case .keyboard: return "Apple TV yazı istiyor"
+        case .offline: return "Apple TV not connected"
+        case .pairing: return "Apple TV pairing"
+        case .idle: return "Apple TV connected"
+        case .playing: return "Apple TV playing"
+        case .keyboard: return "Apple TV wants text"
         }
     }
 }
@@ -58,7 +58,7 @@ struct LeadingWing: View {
         case .playing:
             Artwork(data: model.session.nowPlaying?.artwork, size: 20, radius: 5)
         case .keyboard:
-            Text("Yaz")
+            Text("Type")
                 .font(.system(size: 11, weight: .medium))
                 .foregroundStyle(Theme.text)
         case .offline, .pairing, .idle:
@@ -95,7 +95,7 @@ struct KeyboardRequest: View {
     var body: some View {
         HStack(spacing: 7) {
             KeyboardBadge()
-            Text("TV yazı istiyor")
+            Text("TV wants text")
                 .font(.system(size: 12))
                 .foregroundStyle(Theme.text)
             Spacer(minLength: 0)

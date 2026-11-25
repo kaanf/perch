@@ -23,6 +23,6 @@
     <path d="M168 34 L184 46 L166 52" stroke-linejoin="round"/>
   </g>
 
-  <text x="330" y="337" text-anchor="middle" font-size="13" font-weight="500" fill="#f5f5f7">Kurmak için Perch'ü Applications klasörüne sürükle</text>
-  <text x="330" y="356" text-anchor="middle" font-size="11" fill="#a1a1a6">Sonra notch'a gel ya da ⌥T'ye bas</text>
+  <text x="330" y="337" text-anchor="middle" font-size="13" font-weight="500" fill="#f5f5f7">Drag Perch into Applications to install</text>
+  <text x="330" y="356" text-anchor="middle" font-size="11" fill="#a1a1a6">Then head to the notch, or press ⌥T</text>
 </svg>

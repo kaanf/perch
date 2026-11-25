@@ -71,9 +71,9 @@ struct SetupView: View {
                     .resizable()
                     .frame(width: 96, height: 96)
                     .accessibilityHidden(true)
-                Text("Perch'e hoş geldin")
+                Text("Welcome to Perch")
                     .font(.system(size: 22, weight: .semibold))
-                Text("Kumandayı hazırlamak için birkaç izin gerekiyor. Hiçbiri yazdıklarını kaydetmez.")
+                Text("Perch needs a couple of permissions. Neither records what you type.")
                     .font(.system(size: 13))
                     .foregroundStyle(Setup.secondary)
                     .multilineTextAlignment(.center)
@@ -92,13 +92,13 @@ struct SetupView: View {
             .overlay { RoundedRectangle(cornerRadius: 12).stroke(.white.opacity(0.08), lineWidth: 0.5) }
 
             HStack(spacing: 16) {
-                Text("Bu pencereyi notch'un sağ tık menüsünden yeniden açabilirsin.")
+                Text("You can open this window again from the notch's right-click menu.")
                     .font(.system(size: 11))
                     .foregroundStyle(Setup.secondary)
                 Spacer()
                 Button(action: onContinue) {
                     HStack(spacing: 8) {
-                        Text("Apple TV'ni bağla")
+                        Text("Connect Your Apple TV")
                         Image(systemName: "chevron.right").font(.system(size: 11, weight: .bold))
                     }
                     .font(.system(size: 13, weight: .semibold))
@@ -122,47 +122,47 @@ struct SetupView: View {
     // MARK: - Rows
 
     private var networkRow: some View {
-        SetupRow(symbol: "wifi", tint: Theme.accent, title: "Yerel ağ", badge: .required,
-                 detail: "Aynı Wi‑Fi'deki Apple TV'ni bulup bağlanmak için.") {
+        SetupRow(symbol: "wifi", tint: Theme.accent, title: "Local Network", badge: .required,
+                 detail: "To find the Apple TV on your Wi‑Fi and connect to it.") {
             switch model.network {
-            case .idle: SetupButton("İzin ver", prominent: true) { model.askForNetwork() }
+            case .idle: SetupButton("Allow", prominent: true) { model.askForNetwork() }
             case .waiting: Waiting()
             case .granted: Granted()
-            case .denied: SetupButton("Ayarları aç") { LocalNetworkSettings.open() }
+            case .denied: SetupButton("Open Settings") { LocalNetworkSettings.open() }
             }
         } note: {
             if model.network == .denied {
-                SetupNote("Sistem Ayarları › Gizlilik ve Güvenlik › Yerel Ağ'da Perch anahtarını aç. Bu pencere kendiliğinden güncellenir.")
+                SetupNote("Turn Perch on in System Settings › Privacy & Security › Local Network. This window updates on its own.")
             }
         }
     }
 
     private var accessibilityRow: some View {
-        SetupRow(symbol: "accessibility", tint: Color(hex: 0x5E5CE6), title: "Erişilebilirlik", badge: .optional,
-                 detail: "Menüler uzadığında notch'taki kanatların üstlerine binmemesi için.") {
+        SetupRow(symbol: "accessibility", tint: Color(hex: 0x5E5CE6), title: "Accessibility", badge: .optional,
+                 detail: "Keeps Perch clear of an app's menus when they run long.") {
             switch model.accessibility {
-            case .idle, .denied: SetupButton("Ayarları aç") { model.askForAccessibility() }
+            case .idle, .denied: SetupButton("Open Settings") { model.askForAccessibility() }
             case .waiting: Waiting()
             case .granted: Granted()
             }
         } note: {
             if model.accessibility == .waiting {
-                SetupNote("Sistem Ayarları › Gizlilik ve Güvenlik › Erişilebilirlik'te Perch anahtarını aç. Bu pencere kendiliğinden güncellenir.")
+                SetupNote("Turn Perch on in System Settings › Privacy & Security › Accessibility. This window updates on its own.")
             }
         }
     }
 
     private var shortcutRow: some View {
-        SetupRow(symbol: "keyboard", tint: Color(hex: 0x48484A), title: "Klavye kısayolu", badge: nil,
-                 detail: "Kumandayı her yerden açar.") {
+        SetupRow(symbol: "keyboard", tint: Color(hex: 0x48484A), title: "Keyboard Shortcut", badge: nil,
+                 detail: "Opens the remote from anywhere.") {
             Button { model.toggleShortcutRecording() } label: {
                 HStack(spacing: 8) {
                     if model.recordingShortcut {
-                        Text("Tuşlara bas").foregroundStyle(Theme.text)
+                        Text("Press keys").foregroundStyle(Theme.text)
                     } else {
                         Text(model.preferences.shortcut.displayString)
                             .font(.system(size: 12, design: .monospaced))
-                        Text("Değiştir").foregroundStyle(Setup.secondary)
+                        Text("Change").foregroundStyle(Setup.secondary)
                     }
                 }
                 .font(.system(size: 12))
@@ -176,16 +176,16 @@ struct SetupView: View {
                 }
             }
             .buttonStyle(.plain)
-            .accessibilityLabel("Kısayolu değiştir, şu an \(model.preferences.shortcut.displayString)")
+            .accessibilityLabel("Change the shortcut, currently \(model.preferences.shortcut.displayString)")
         } note: {
             EmptyView()
         }
     }
 
     private var loginRow: some View {
-        SetupRow(symbol: "power", tint: Theme.green, title: "Girişte başlat", badge: nil,
-                 detail: "Mac açılınca notch'ta hazır bekler.") {
-            Toggle("Girişte başlat", isOn: $model.launchesAtLogin)
+        SetupRow(symbol: "power", tint: Theme.green, title: "Launch at Login", badge: nil,
+                 detail: "Ready in the notch when your Mac starts.") {
+            Toggle("Launch at Login", isOn: $model.launchesAtLogin)
                 .toggleStyle(.switch)
                 .labelsHidden()
                 .tint(Theme.accent)
@@ -234,6 +234,7 @@ private struct SetupRow<Control: View, Note: View>: View {
                         badgeView
                     }
                     Text(detail).font(.system(size: 12)).foregroundStyle(Setup.secondary)
+                        .fixedSize(horizontal: false, vertical: true)
                 }
                 Spacer(minLength: 8)
                 control
@@ -248,14 +249,14 @@ private struct SetupRow<Control: View, Note: View>: View {
     @ViewBuilder private var badgeView: some View {
         switch badge {
         case .required:
-            Text("Gerekli")
+            Text("Required")
                 .font(.system(size: 10, weight: .semibold))
                 .foregroundStyle(Color(hex: 0x6AB4FF))
                 .padding(.horizontal, 6)
                 .padding(.vertical, 1)
                 .background(Theme.accent.opacity(0.18), in: RoundedRectangle(cornerRadius: 4))
         case .optional:
-            Text("İsteğe bağlı")
+            Text("Optional")
                 .font(.system(size: 10, weight: .semibold))
                 .foregroundStyle(Color(hex: 0xC7C7CC))
                 .padding(.horizontal, 6)
@@ -293,7 +294,7 @@ private struct SetupButton: View {
 
 private struct Granted: View {
     var body: some View {
-        Label("Verildi", systemImage: "checkmark")
+        Label("Allowed", systemImage: "checkmark")
             .font(.system(size: 12, weight: .medium))
             .foregroundStyle(Theme.green)
     }
@@ -303,7 +304,7 @@ private struct Waiting: View {
     var body: some View {
         HStack(spacing: 6) {
             ProgressView().controlSize(.small)
-            Text("Bekleniyor").font(.system(size: 12)).foregroundStyle(Setup.secondary)
+            Text("Waiting").font(.system(size: 12)).foregroundStyle(Setup.secondary)
         }
     }
 }

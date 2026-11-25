@@ -20,7 +20,7 @@ struct TypingPanel: View {
             HStack(spacing: 10) {
                 KeyboardBadge(size: 26)
                 VStack(alignment: .leading, spacing: 1) {
-                    Text("TV yazmanı bekliyor")
+                    Text("The TV is waiting for you to type")
                         .font(.system(size: 14, weight: .semibold))
                         .foregroundStyle(Theme.text)
                     Text(model.session.deviceName ?? "Apple TV")
@@ -36,16 +36,16 @@ struct TypingPanel: View {
                         .contentShape(Rectangle())
                 }
                 .buttonStyle(.plain)
-                .accessibilityLabel("Klavye modunu kapat")
+                .accessibilityLabel("Leave keyboard mode")
             }
 
             HStack(spacing: 8) {
-                TextField("TV'ye gidecek metin", text: $model.draft)
+                TextField("Text for the TV", text: $model.draft)
                     .textFieldStyle(.plain)
                     .font(.system(size: 16))
                     .foregroundStyle(Theme.text)
                     .focused($focused)
-                    .accessibilityLabel("TV'ye gönderilecek metin")
+                    .accessibilityLabel("Text to send to the TV")
                 if !model.draft.isEmpty {
                     Button { model.draft = "" } label: {
                         Image(systemName: "xmark.circle.fill")
@@ -53,7 +53,7 @@ struct TypingPanel: View {
                             .foregroundStyle(Theme.secondary)
                     }
                     .buttonStyle(.plain)
-                    .accessibilityLabel("Temizle")
+                    .accessibilityLabel("Clear")
                 }
             }
             .padding(.horizontal, 12)
@@ -63,11 +63,11 @@ struct TypingPanel: View {
 
             HStack(spacing: 6) {
                 Circle().fill(Theme.green).frame(width: 6, height: 6)
-                Text("Canlı eşleniyor").font(.system(size: 11)).foregroundStyle(Theme.secondary)
+                Text("Syncing live").font(.system(size: 11)).foregroundStyle(Theme.secondary)
                 Spacer()
                 KeyCap("↵")
                 KeyCap("esc")
-                Text("kumandaya dön").font(.system(size: 11)).foregroundStyle(Theme.secondary)
+                Text("back to remote").font(.system(size: 11)).foregroundStyle(Theme.secondary)
             }
         }
         .padding(.horizontal, 20)

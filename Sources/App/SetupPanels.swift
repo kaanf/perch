@@ -14,13 +14,13 @@ struct DeviceList: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
-            Text("Apple TV seç")
+            Text("Choose an Apple TV")
                 .font(.system(size: 13, weight: .semibold))
                 .foregroundStyle(Theme.text)
             if model.session.devices.isEmpty {
                 HStack(spacing: 8) {
                     ProgressView().controlSize(.small)
-                    Text("Ağda Apple TV aranıyor").font(.system(size: 12)).foregroundStyle(Theme.secondary)
+                    Text("Looking for Apple TVs on your network").font(.system(size: 12)).foregroundStyle(Theme.secondary)
                 }
                 .frame(height: 34)
             } else {
@@ -43,7 +43,7 @@ struct DeviceList: View {
             Image(systemName: "tv").font(.system(size: 12)).foregroundStyle(Theme.text)
             Text(device.name).font(.system(size: 13)).foregroundStyle(Theme.text).lineLimit(1)
             Spacer()
-            Text(device.isPaired ? "Bağlan" : "Eşleştir").font(.system(size: 11)).foregroundStyle(Theme.secondary)
+            Text(device.isPaired ? "Connect" : "Pair").font(.system(size: 11)).foregroundStyle(Theme.secondary)
             Image(systemName: "chevron.right").font(.system(size: 10, weight: .semibold)).foregroundStyle(Theme.secondary)
         }
         .padding(.horizontal, 10)
@@ -64,7 +64,7 @@ struct PinEntry: View {
 
     var body: some View {
         VStack(spacing: 10) {
-            Text("TV'de görünen kodu gir")
+            Text("Enter the code on your TV")
                 .font(.system(size: 12, weight: .medium))
                 .foregroundStyle(Theme.text)
             HStack(spacing: 8) {
@@ -84,15 +84,15 @@ struct PinEntry: View {
             // The boxes are drawn from this field, which takes the typing
             // and is otherwise out of sight.
             .background {
-                TextField("Kod", text: $pin)
+                TextField("Code", text: $pin)
                     .textFieldStyle(.plain)
                     .focused($focused)
                     .opacity(0.01)
-                    .accessibilityLabel("Eşleştirme kodu")
+                    .accessibilityLabel("Pairing code")
             }
             .contentShape(Rectangle())
             .onTapGesture { focused = true }
-            Text(submitted ? "Doğrulanıyor" : "\(model.session.deviceName ?? "Apple TV") ile eşleşiyor")
+            Text(submitted ? "Checking" : "Pairing with \(model.session.deviceName ?? "Apple TV")")
                 .font(.system(size: 11))
                 .foregroundStyle(Theme.secondary)
                 .lineLimit(1)
@@ -122,20 +122,20 @@ struct ConnectingView: View {
         VStack(spacing: 10) {
             HStack(spacing: 10) {
                 ProgressView().controlSize(.small)
-                Text("\(model.session.deviceName ?? "Apple TV") bağlanıyor")
+                Text("Connecting to \(model.session.deviceName ?? "Apple TV")")
                     .font(.system(size: 13))
                     .foregroundStyle(Theme.text)
                     .lineLimit(1)
             }
             if model.connectingStalled {
-                Text("Uzun sürdü. Apple TV kapalı olabilir ya da macOS, Perch'ün yerel ağa erişmesine izin vermiyor olabilir.")
+                Text("This is taking a while. The Apple TV may be off, or macOS may be keeping Perch off the local network.")
                     .font(.system(size: 11))
                     .foregroundStyle(Theme.secondary)
                     .multilineTextAlignment(.center)
                     .fixedSize(horizontal: false, vertical: true)
                 HStack(spacing: 8) {
-                    PillButton(title: "Yerel ağ ayarları") { LocalNetworkSettings.open() }
-                    PillButton(title: "Tekrar dene") { model.session.retry() }
+                    PillButton(title: "Local Network Settings") { LocalNetworkSettings.open() }
+                    PillButton(title: "Try Again") { model.session.retry() }
                 }
             }
         }
@@ -160,7 +160,7 @@ struct FailedView: View {
 
     var body: some View {
         VStack(spacing: 10) {
-            Label("Bağlanılamadı", systemImage: "exclamationmark.triangle.fill")
+            Label("Couldn't connect", systemImage: "exclamationmark.triangle.fill")
                 .font(.system(size: 13, weight: .semibold))
                 .foregroundStyle(Theme.text)
             Text(message)
@@ -168,7 +168,7 @@ struct FailedView: View {
                 .foregroundStyle(Theme.secondary)
                 .lineLimit(2)
                 .multilineTextAlignment(.center)
-            PillButton(title: "Tekrar dene") { model.session.retry() }
+            PillButton(title: "Try Again") { model.session.retry() }
         }
         .padding(.horizontal, 16)
         .padding(.bottom, 12)
@@ -180,15 +180,15 @@ struct FailedView: View {
 struct NetworkDeniedView: View {
     var body: some View {
         VStack(spacing: 10) {
-            Label("Yerel ağ izni gerekli", systemImage: "wifi.exclamationmark")
+            Label("Local network access needed", systemImage: "wifi.exclamationmark")
                 .font(.system(size: 13, weight: .semibold))
                 .foregroundStyle(Theme.text)
-            Text("Perch, Apple TV'ni bulmak için yerel ağa erişmeli. İzni verince kendiliğinden bağlanır.")
+            Text("Perch needs the local network to find your Apple TV. Once you allow it, it connects on its own.")
                 .font(.system(size: 11))
                 .foregroundStyle(Theme.secondary)
                 .multilineTextAlignment(.center)
                 .fixedSize(horizontal: false, vertical: true)
-            PillButton(title: "Ayarları aç") { LocalNetworkSettings.open() }
+            PillButton(title: "Open Settings") { LocalNetworkSettings.open() }
         }
         .padding(.horizontal, 16)
         .padding(.bottom, 12)

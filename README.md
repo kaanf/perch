@@ -62,9 +62,7 @@ the scenarios are `unpaired`, `pairing`, `connecting`, `idle`, `playing`, `keybo
 - **local network**: needed. it's how perch finds your apple tv and talks to it
 - **accessibility**: optional, and only for one thing. it lets perch see where the frontmost app's menus end, so its left side can get out of their way. without it perch still works, it just can't tell when the menus are long
 
-the setup window asks for both and tells you when they went through. right click the notch and choose "Kurulum ve İzinler…" to open it again. there's no menu bar icon, so that's how you get in.
-
-the interface is in turkish for now.
+the setup window asks for both and tells you when they went through. right click the notch and choose "Setup and Permissions…" to open it again. there's no menu bar icon, so that's how you get in.
 
 ## how it works
 

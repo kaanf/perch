@@ -34,14 +34,14 @@ final class MockTV: TVSession {
 
         var title: String {
             switch self {
-            case .unpaired: return "Eşleşmemiş (cihaz listesi)"
-            case .pairing: return "Eşleştirme (PIN)"
-            case .connecting: return "Bağlanıyor"
-            case .idle: return "Bağlı, boşta"
-            case .playing: return "Oynatıyor"
-            case .keyboard: return "Klavye istendi"
-            case .failed: return "Hata"
-            case .networkDenied: return "Yerel ağ izni yok"
+            case .unpaired: return "Not paired (device list)"
+            case .pairing: return "Pairing (PIN)"
+            case .connecting: return "Connecting"
+            case .idle: return "Connected, idle"
+            case .playing: return "Playing"
+            case .keyboard: return "Keyboard requested"
+            case .failed: return "Error"
+            case .networkDenied: return "No local network access"
             }
         }
     }
@@ -70,10 +70,10 @@ final class MockTV: TVSession {
     func apply(_ scenario: Scenario) {
         self.scenario = scenario
         devices = [
-            TVDevice(id: "salon", name: "Salon Apple TV", isPaired: scenario != .unpaired && scenario != .pairing),
-            TVDevice(id: "yatak", name: "Yatak Odası", isPaired: false),
+            TVDevice(id: "living-room", name: "Living Room", isPaired: scenario != .unpaired && scenario != .pairing),
+            TVDevice(id: "bedroom", name: "Bedroom", isPaired: false),
         ]
-        deviceName = scenario == .unpaired ? nil : "Salon Apple TV"
+        deviceName = scenario == .unpaired ? nil : "Living Room"
         nowPlaying = nil
         keyboardFocused = false
         remoteText = ""
@@ -91,9 +91,9 @@ final class MockTV: TVSession {
             link = .connected
             nowPlaying = Self.film
             keyboardFocused = true
-            remoteText = "yüzük"
+            remoteText = "the lord"
             sentText = remoteText
-        case .failed: link = .failed("Apple TV yanıt vermedi")
+        case .failed: link = .failed("The Apple TV didn't answer")
         case .networkDenied: link = .localNetworkDenied
         }
     }
@@ -109,7 +109,7 @@ final class MockTV: TVSession {
     func submitPIN(_ pin: String) {
         after(0.6) { [self] in
             if pin == "0000" {
-                link = .failed("Kod yanlış")
+                link = .failed("Wrong code")
             } else {
                 apply(.idle)
             }
@@ -152,7 +152,7 @@ final class MockTV: TVSession {
     }
 
     private static var film: TVNowPlaying {
-        TVNowPlaying(title: "Gece Treni", detail: "TV", duration: 2 * 3600 + 4 * 60,
+        TVNowPlaying(title: "Night Train", detail: "TV", duration: 2 * 3600 + 4 * 60,
                      isPlaying: true, position: 3600 + 12 * 60 + 40)
     }
 }

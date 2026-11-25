@@ -46,7 +46,7 @@ struct RemotePanel: View {
             }
             HStack(spacing: 5) {
                 Circle().fill(Theme.green).frame(width: 6, height: 6)
-                Text("Bağlı").font(.system(size: 11)).foregroundStyle(Theme.secondary)
+                Text("Connected").font(.system(size: 11)).foregroundStyle(Theme.secondary)
             }
         }
         .frame(height: 24)
@@ -65,27 +65,27 @@ struct RemotePanel: View {
             .background(neighbour.wantsAttention ? Theme.accent : Theme.control, in: Capsule())
         }
         .buttonStyle(.plain)
-        .accessibilityLabel("\(neighbour.id) uygulamasına geç")
+        .accessibilityLabel("Switch to \(neighbour.id)")
     }
 
     private var buttons: some View {
         Grid(horizontalSpacing: 10, verticalSpacing: 8) {
             GridRow {
-                RoundButton(model: model, button: .back, symbol: "chevron.left", title: "Geri")
-                RoundButton(model: model, button: .home, symbol: "tv", title: "Ana ekran")
+                RoundButton(model: model, button: .back, symbol: "chevron.left", title: "Back")
+                RoundButton(model: model, button: .home, symbol: "tv", title: "Home")
             }
             GridRow {
-                RoundButton(model: model, button: .playPause, symbol: "playpause.fill", title: "Oynat")
-                RoundButton(model: model, button: .sleep, symbol: "power", title: "Uyku")
+                RoundButton(model: model, button: .playPause, symbol: "playpause.fill", title: "Play")
+                RoundButton(model: model, button: .sleep, symbol: "power", title: "Sleep")
             }
         }
     }
 
     private var volume: some View {
         HStack(spacing: 8) {
-            volumeButton(.volumeDown, symbol: "speaker.minus.fill", label: "Sesi kıs")
-            Text("Ses").font(.system(size: 11)).foregroundStyle(Theme.secondary)
-            volumeButton(.volumeUp, symbol: "speaker.plus.fill", label: "Sesi aç")
+            volumeButton(.volumeDown, symbol: "speaker.minus.fill", label: "Volume down")
+            Text("Volume").font(.system(size: 11)).foregroundStyle(Theme.secondary)
+            volumeButton(.volumeUp, symbol: "speaker.plus.fill", label: "Volume up")
         }
     }
 
@@ -108,7 +108,7 @@ struct RemotePanel: View {
             Button { model.resumeTyping() } label: {
                 HStack(spacing: 8) {
                     KeyboardBadge(size: 16)
-                    Text("TV yazı bekliyor. Yazmaya dön").font(.system(size: 12)).foregroundStyle(Theme.text)
+                    Text("The TV wants text. Back to typing").font(.system(size: 12)).foregroundStyle(Theme.text)
                     Spacer()
                 }
                 .padding(.horizontal, 10)
@@ -120,7 +120,7 @@ struct RemotePanel: View {
         } else {
             HStack(spacing: 8) {
                 Image(systemName: "keyboard").font(.system(size: 12))
-                Text("TV'de bir metin alanı açılınca buradan yazarsın").font(.system(size: 12))
+                Text("When a text field opens on the TV, you type here").font(.system(size: 12))
                 Spacer()
             }
             .foregroundStyle(Theme.secondary)
@@ -132,13 +132,13 @@ struct RemotePanel: View {
 
     private var hints: some View {
         HStack(spacing: 12) {
-            hint("←↑↓→", "gezin")
-            hint("↵", "seç")
-            hint("esc", "geri")
-            hint("space", "oynat")
-            hint("⌘ ↑↓", "ses")
+            hint("←↑↓→", "move")
+            hint("↵", "select")
+            hint("esc", "back")
+            hint("space", "play")
+            hint("⌘ ↑↓", "volume")
             Spacer()
-            hint(shortcut, "kapat")
+            hint(shortcut, "close")
         }
     }
 
@@ -183,17 +183,17 @@ private struct DirectionPad: View {
     var body: some View {
         ZStack {
             RoundedRectangle(cornerRadius: 22).fill(Theme.card)
-            arrow(.up, symbol: "chevron.up", label: "Yukarı").frame(maxHeight: .infinity, alignment: .top)
-            arrow(.down, symbol: "chevron.down", label: "Aşağı").frame(maxHeight: .infinity, alignment: .bottom)
-            arrow(.left, symbol: "chevron.left", label: "Sol").frame(maxWidth: .infinity, alignment: .leading)
-            arrow(.right, symbol: "chevron.right", label: "Sağ").frame(maxWidth: .infinity, alignment: .trailing)
+            arrow(.up, symbol: "chevron.up", label: "Up").frame(maxHeight: .infinity, alignment: .top)
+            arrow(.down, symbol: "chevron.down", label: "Down").frame(maxHeight: .infinity, alignment: .bottom)
+            arrow(.left, symbol: "chevron.left", label: "Left").frame(maxWidth: .infinity, alignment: .leading)
+            arrow(.right, symbol: "chevron.right", label: "Right").frame(maxWidth: .infinity, alignment: .trailing)
             Button { model.press(.select) } label: {
                 Circle()
                     .fill(model.pressed == .select ? Theme.accent : Theme.control)
                     .frame(width: 44, height: 44)
             }
             .buttonStyle(.plain)
-            .accessibilityLabel("Seç")
+            .accessibilityLabel("Select")
         }
         .padding(4)
         .frame(width: Self.size, height: Self.size)
@@ -235,17 +235,17 @@ private struct NowPlayingCard: View {
                 }
                 Progress(playing: playing)
                 HStack(spacing: 18) {
-                    transport("gobackward.10", label: "10 saniye geri") { model.session.skip(by: -10) }
-                    transport(playing.isPlaying ? "pause.fill" : "play.fill", label: "Oynat veya duraklat") {
+                    transport("gobackward.10", label: "Back 10 seconds") { model.session.skip(by: -10) }
+                    transport(playing.isPlaying ? "pause.fill" : "play.fill", label: "Play or pause") {
                         model.press(.playPause)
                     }
-                    transport("goforward.10", label: "10 saniye ileri") { model.session.skip(by: 10) }
+                    transport("goforward.10", label: "Forward 10 seconds") { model.session.skip(by: 10) }
                 }
                 .frame(maxWidth: .infinity)
             } else {
                 VStack(spacing: 6) {
                     Image(systemName: "play.tv").font(.system(size: 20)).foregroundStyle(Theme.secondary)
-                    Text("Şu an bir şey oynatılmıyor").font(.system(size: 12)).foregroundStyle(Theme.secondary)
+                    Text("Nothing is playing").font(.system(size: 12)).foregroundStyle(Theme.secondary)
                 }
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
             }
