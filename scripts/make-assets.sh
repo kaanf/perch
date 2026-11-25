@@ -1,0 +1,28 @@
+#!/bin/bash
+# Renders Resources/Icon/AppIcon.svg into Resources/AppIcon.icns, and
+# Resources/DMG/background.svg into Resources/DMG/background.tiff.
+#
+# Run it after changing either SVG; the outputs are committed, so building
+# Perch doesn't depend on this.
+set -euo pipefail
+cd "$(dirname "$0")/.."
+
+WORK="$(mktemp -d)"
+trap 'rm -rf "$WORK"' EXIT
+
+swiftc -O -o "$WORK/render-svg" scripts/render-svg.swift
+
+ICONSET="$WORK/AppIcon.iconset"
+mkdir "$ICONSET"
+for points in 16 32 128 256 512; do
+    "$WORK/render-svg" Resources/Icon/AppIcon.svg 1024 1024 "$points" "$ICONSET/icon_${points}x${points}.png"
+    "$WORK/render-svg" Resources/Icon/AppIcon.svg 1024 1024 "$((points * 2))" "$ICONSET/icon_${points}x${points}@2x.png"
+done
+iconutil -c icns "$ICONSET" -o Resources/AppIcon.icns
+echo "Wrote Resources/AppIcon.icns"
+
+# One tiff holding the background at 1x and 2x, so it's sharp on any display.
+"$WORK/render-svg" Resources/DMG/background.svg 660 400 660 "$WORK/background.png"
+"$WORK/render-svg" Resources/DMG/background.svg 660 400 1320 "$WORK/background@2x.png"
+tiffutil -cathidpicheck "$WORK/background.png" "$WORK/background@2x.png" -out Resources/DMG/background.tiff 2>/dev/null
+echo "Wrote Resources/DMG/background.tiff"

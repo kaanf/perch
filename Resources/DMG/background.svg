@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="660" height="400" viewBox="0 0 660 400" font-family="-apple-system, 'SF Pro Text', 'Helvetica Neue', Helvetica, Arial, sans-serif">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#1d2027"/>
+      <stop offset="1" stop-color="#0e0f13"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="330" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(330 0) scale(396 200) translate(-330 0)">
+      <stop offset="0" stop-color="#ffffff" stop-opacity="0.06"/>
+      <stop offset="0.7" stop-color="#ffffff" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <rect width="660" height="400" fill="url(#bg)"/>
+  <rect width="660" height="400" fill="url(#glow)"/>
+
+  <path d="M206 0 Q218 0 218 12 L218 22 Q218 40 236 40 L424 40 Q442 40 442 22 L442 12 Q442 0 454 0 Z" fill="#000000"/>
+  <rect x="316" y="26" width="28" height="4" rx="2" fill="#0a84ff"/>
+
+  <text x="330" y="73" text-anchor="middle" font-size="15" font-weight="600" letter-spacing="0.3" fill="#f5f5f7">Perch</text>
+
+  <g transform="translate(230 150)" fill="none" stroke="#0a84ff" stroke-width="3" stroke-linecap="round">
+    <path d="M10 48 Q100 -6 182 44" stroke-dasharray="2 9"/>
+    <path d="M168 34 L184 46 L166 52" stroke-linejoin="round"/>
+  </g>
+
+  <text x="330" y="337" text-anchor="middle" font-size="13" font-weight="500" fill="#f5f5f7">Kurmak için Perch'ü Applications klasörüne sürükle</text>
+  <text x="330" y="356" text-anchor="middle" font-size="11" fill="#a1a1a6">Sonra notch'a gel ya da ⌥T'ye bas</text>
+</svg>
